@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,9 @@ class Message
 
     #[ORM\Column(type: "text",)]
     private ?string $text = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $address = null;
 
     public function getId(): ?int
     {
@@ -62,6 +66,18 @@ class Message
     public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
