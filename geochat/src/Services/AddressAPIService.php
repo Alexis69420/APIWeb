@@ -6,5 +6,5 @@ use GuzzleHttp\Client;
 
 class AddressAPIService
 {
-    public const base_uri = 'https://api-adresse.data.gouv.fr/';
+    public const BASE_URI = 'https://api-adresse.data.gouv.fr/';
 }
