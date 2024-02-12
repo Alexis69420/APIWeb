@@ -12,8 +12,7 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('longitude')
-            ->add('latitude')
+            ->add('address')
             ->add('text')
         ;
     }
