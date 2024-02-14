@@ -49,6 +49,8 @@ class MessageController extends AbstractController
                 $message
                     ->setLongitude($lngLat['features'][0]['geometry']['coordinates'][1])
                     ->setLatitude($lngLat['features'][0]['geometry']['coordinates'][0]);
+                $message->setAddress($addressAPIService->
+                                    getAddresses([$message->getLongitude(), $message->getLatitude()])[0]);
                 $messageRepository->save($message, true);
             }
 
