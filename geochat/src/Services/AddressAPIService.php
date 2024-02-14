@@ -20,13 +20,20 @@ class AddressAPIService
         echo $response->getHeaderLine('content-type'); // 'application/json; charset=utf8'
         echo $response->getBody();
         //send asyncronous request
-        $promise = $client->requestAsync('GET', $searchQ)->then(function ($response) {
-            //echo $response->getBody();
-        });
+        $promise = $client->requestAsync('GET', $searchQ);
         $promise->wait();
         if($response->getBody() != null){
             return json_decode($response->getBody(), true);
         }
         return null;
+    }
+
+    public function getAddresses(array $lnglat): array
+    {
+        $searchQ = self::BASE_URI . 'reverse/csv/?lon='.$lnglat[0].'&lat='.$lnglat[1];
+        $client = new Client();
+        $response = $client->request('GET', $searchQ);
+        $addresses = explode("\n", $response->getBody());
+        return $addresses;
     }
 }
