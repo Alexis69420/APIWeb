@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Services\AddressAPIService;
 
 #[Route('/message')]
 class MessageController extends AbstractController
@@ -41,6 +42,15 @@ class MessageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageRepository->save($message, true);
+            $address = $form->get('address')->getData();
+            $addressAPIService = new AddressAPIService();
+            $lngLat = $addressAPIService->getLngLat($address);
+            if($lngLat != null){
+                $message
+                    ->setLongitude($lngLat['features'][0]['geometry']['coordinates'][0])
+                    ->setLatitude($lngLat['features'][0]['geometry']['coordinates'][1]);
+                $messageRepository->save($message, true);
+            }
 
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
         }
