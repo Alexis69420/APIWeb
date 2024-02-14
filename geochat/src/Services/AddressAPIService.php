@@ -21,7 +21,7 @@ class AddressAPIService
         echo $response->getBody();
         //send asyncronous request
         $promise = $client->requestAsync('GET', $searchQ)->then(function ($response) {
-            echo $response->getBody();
+            //echo $response->getBody();
         });
         $promise->wait();
         if($response->getBody() != null){
