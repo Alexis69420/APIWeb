@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MessageRepository;
+use FOS\RestBundle\Controller\Annotations\View;
 
 #[Route('/api')]
 class ApiController extends AbstractController
@@ -18,9 +19,12 @@ class ApiController extends AbstractController
         ]);
     }
 
+    #[View()]
     #[Route('/message', name: 'app_message_index', methods: ['GET'])]
-    public function messages(MessageRepository $messageRepository): Response
+    public function messages(MessageRepository $messageRepository)
     {
-        return $this->json($messageRepository->findAll(), 200, [], ['groups' => 'message:read']);
+        return [
+            "messages" => $messageRepository->findAll()
+        ];
     }
 }
