@@ -22,8 +22,14 @@ class ApiController extends AbstractController
 
     #[View(serializerGroups: ["message-basic"])]
     #[Route('/messages', name: 'app_message_index', methods: ['GET'])]
-    public function messages(MessageRepository $messageRepository)
+    public function messages(MessageRepository $messageRepository, String $address, int $radius)
     {
+        if($address==null){
+            return null;
+        }
+        if($radius==null){
+            $radius = 2;
+        }
         return $messageRepository->findAll();
     }
 
