@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,13 +23,20 @@ class ApiController extends AbstractController
 
     #[View(serializerGroups: ["message-basic"])]
     #[Route('/messages', name: 'app_message_index', methods: ['GET'])]
-    public function messages(MessageRepository $messageRepository, String $address, int $radius)
+    public function messages(MessageRepository $messageRepository, String $address, int $radius, DateTime $posted_after)
     {
         if($address==null){
             return null;
         }
         if($radius==null){
             $radius = 2;
+        }
+        if($posted_after !=null){
+            return $messageRepository->findBy([
+                'address' => $address,
+                'radius' => $radius,
+                'posted_after' => $posted_after
+            ]);
         }
         return $messageRepository->findAll();
     }
